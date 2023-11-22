@@ -12,7 +12,7 @@ export default function Login_Password() {
         onSubmit={async (value) => {
           console.log(value);
         }}>
-        <Form className="shadow-md p-5 rounded-md flex flex-col gap-2 max-w-xs w-full">
+        <Form className="sm:shadow-md p-5 rounded-md flex flex-col gap-2 max-w-xs w-full">
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-700 to-yellow-500 font-bold text-center text-3xl">
             Teftaco
           </span>

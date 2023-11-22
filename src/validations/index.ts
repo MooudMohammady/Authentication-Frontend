@@ -6,7 +6,7 @@ export const LoginSchema = yup.object().shape({
      .test('phone_number_or_email', 'شماره موبایل یا ایمیل معتبر نیستند', (value) => {
         return validateEmail(value) || validatePhone(parseInt(value ?? '0'));
      }),
-  password: yup.string().required()
+  // password: yup.string().required()
 });
 
 const validateEmail = (email: string | undefined) => {

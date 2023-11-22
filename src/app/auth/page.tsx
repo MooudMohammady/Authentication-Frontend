@@ -1,19 +1,65 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { LoginSchema } from "@/validations";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { LuLoader2 } from "react-icons/lu";
 
 export default function Login() {
-  //TODO برسی وارد بودن یا نبودن کاربر با ارسال اولیه شماره موبایل شاید
+  const [isSending, setIsSending] = useState(false);
+  const router = useRouter();
   return (
     <main className="h-screen grid place-items-center">
       <Formik
         initialValues={{ phone_number_or_email: "" }}
         validationSchema={LoginSchema}
         onSubmit={async (value) => {
-          console.log(value);
+          setIsSending(true);
+          await axios
+            .get(`/api/users/is-exists`, {
+              params: {
+                phone_number_or_email: value.phone_number_or_email,
+              },
+            })
+            .then(async (res) => {
+              if (res.data.data.is_exists) {
+                await axios
+                  .get(
+                    `/api/users/send-login-otp?phone_number_or_email=${value.phone_number_or_email}`
+                  )
+                  .then((res) => {
+                    alert(res.data.message)
+                    router.push(
+                      `/auth/otp?is_exists=${res.data.data.is_exists}&phone_number_or_email=${value.phone_number_or_email}`
+                    );
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+              } else {
+                await axios
+                  .get(
+                    `/api/users/send-sign-up-otp?phone_number_or_email=${value.phone_number_or_email}`
+                  )
+                  .then((res) => {
+                    alert(res.data.message)
+                    router.push(
+                      `/auth/otp?is_exists=${res.data.data.is_exists}&phone_number_or_email=${value.phone_number_or_email}`
+                    );
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+              }
+              setIsSending(false);
+            })
+            .catch((err) => {
+              console.log(err);
+              setIsSending(false);
+            });
         }}>
-        <Form className="shadow-md p-5 rounded-md flex flex-col gap-2 max-w-xs w-full">
+        <Form className="sm:shadow-md p-5 rounded-md flex flex-col gap-2 max-w-xs w-full">
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-700 to-yellow-500 font-bold text-center text-3xl">
             Teftaco
           </span>
@@ -39,8 +85,10 @@ export default function Login() {
           </p>
           <button
             type="submit"
-            className="py-2 text-white rounded-md bg-purple-700 hover:bg-purple-600 transition-colors">
-            ارسال کد تایید
+            disabled={isSending}
+            className="py-2 text-white rounded-md bg-purple-700 hover:bg-purple-600 transition-colors flex gap-3 justify-center items-center disabled:opacity-50">
+            ارسال کد تایید{" "}
+            <LuLoader2 className="text-xl animate-spin" hidden={!isSending} />
           </button>
         </Form>
       </Formik>
