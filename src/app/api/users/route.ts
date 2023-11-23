@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
       .post(
         `${process.env.API_URL}/api/buyers/`,
         {
-          user: res!.data.data.id,
+          user: res!.data.id,
           national_code: "",
         },
         {
