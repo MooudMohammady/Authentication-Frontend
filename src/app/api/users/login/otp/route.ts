@@ -22,7 +22,12 @@ export async function POST(request: NextRequest) {
       JSON.stringify({
         ...res.data,
       }),
-      { status: 200 }
+      {
+        status: 200,
+        headers: {
+          "Set-Cookie": `token=${res.data.refresh}; httpOnly=true`,
+        },
+      }
     );
   } catch (error) {
     console.log("users login-otp error : ", error);

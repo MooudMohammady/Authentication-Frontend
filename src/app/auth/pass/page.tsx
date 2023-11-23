@@ -82,7 +82,8 @@ export default function Login_Password({
               })
               .then((res) => {
                 console.log(res);
-                alert('شما با موفقیت ثبت نام شدید')
+                alert('شما با موفقیت ثبت نام شدید . حالا با ایمیل یا شماره تون وارد بشید')
+                router.push('/auth')
                 setIsSending(false);
               })
               .catch((err) => {
