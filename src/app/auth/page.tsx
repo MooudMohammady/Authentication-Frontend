@@ -23,20 +23,13 @@ export default function Login() {
               },
             })
             .then(async (res) => {
+              console.log(res);
+              
+              let is_exists = res.data.data.is_exists;
               if (res.data.data.is_exists) {
-                await axios
-                  .get(
-                    `/api/users/send-login-otp?phone_number_or_email=${value.phone_number_or_email}`
-                  )
-                  .then((res) => {
-                    alert(res.data.message)
-                    router.push(
-                      `/auth/otp?is_exists=${res.data.data.is_exists}&phone_number_or_email=${value.phone_number_or_email}`
-                    );
-                  })
-                  .catch((err) => {
-                    console.log(err);
-                  });
+                router.push(
+                  `/auth/pass?is_exists=${is_exists}&phone_number_or_email=${value.phone_number_or_email}`
+                );
               } else {
                 await axios
                   .get(
@@ -45,7 +38,7 @@ export default function Login() {
                   .then((res) => {
                     alert(res.data.message)
                     router.push(
-                      `/auth/otp?is_exists=${res.data.data.is_exists}&phone_number_or_email=${value.phone_number_or_email}`
+                      `/auth/otp?is_exists=${is_exists}&phone_number_or_email=${value.phone_number_or_email}`
                     );
                   })
                   .catch((err) => {

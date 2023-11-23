@@ -2,8 +2,8 @@ import * as yup from 'yup';
 
 export const LoginSchema = yup.object().shape({
   phone_number_or_email: yup.string()
-     .required('شماره موبایل یا ایمیل اجباری مباشند')
-     .test('phone_number_or_email', 'شماره موبایل یا ایمیل معتبر نیستند', (value) => {
+     .required('شماره موبایل یا ایمیل اجباری میباشند')
+     .test('phone_number_or_email', 'شماره موبایل یا ایمیل معتبر نیست', (value) => {
         return validateEmail(value) || validatePhone(parseInt(value ?? '0'));
      }),
   // password: yup.string().required()
@@ -22,5 +22,5 @@ const validatePhone = (phone: number | undefined) => {
 };
 
 export const Login_Password_Schema = yup.object().shape({
-  password: yup.string().required().min(4)
+  password: yup.string().required('وارد کردن رمز عبور اجباری است').min(4)
 })

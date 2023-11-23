@@ -1,40 +1,123 @@
 "use client";
-import React from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { Login_Password_Schema } from "@/validations";
+import Link from "next/link";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { LuLoader2 } from "react-icons/lu";
 
-export default function Login_Password() {
+export default function Login_Password({
+  searchParams,
+}: {
+  searchParams: { phone_number_or_email: string; is_exists: string };
+}) {
+  const [isSending, setIsSending] = useState(false);
+  const router = useRouter();
+
+  const goToOTP = useCallback(async () => {
+    setIsSending(true);
+    if (searchParams.is_exists == "true") {
+      await axios
+        .get(
+          `/api/users/send-login-otp?phone_number_or_email=${searchParams.phone_number_or_email}`
+        )
+        .then((res) => {
+          alert(res.data.message);
+          router.push(
+            `/auth/otp?is_exists=${searchParams.is_exists}&phone_number_or_email=${searchParams.phone_number_or_email}`
+          );
+          setIsSending(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setIsSending(false);
+        });
+    } else {
+      await axios
+        .get(
+          `/api/users/send-sign-up-otp?phone_number_or_email=${searchParams.phone_number_or_email}`
+        )
+        .then((res) => {
+          alert(res.data.message);
+          router.push(
+            `/auth/otp?is_exists=${searchParams.is_exists}&phone_number_or_email=${searchParams.phone_number_or_email}`
+          );
+          setIsSending(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setIsSending(false);
+        });
+    }
+  }, []);
+
   return (
     <main className="h-screen grid place-items-center">
       <Formik
         initialValues={{ password: "" }}
         validationSchema={Login_Password_Schema}
         onSubmit={async (value) => {
-          console.log(value);
+          setIsSending(true);
+          if (searchParams.is_exists == "true") {
+            await axios
+              .post(`/api/users/login/password`, {
+                username: searchParams.phone_number_or_email,
+                password: value.password,
+              })
+              .then((res) => {
+                console.log(res);
+                alert('شما با موفقیت وارد شدید')
+                setIsSending(false);
+              })
+              .catch((err) => {
+                console.log(err);
+                setIsSending(false);
+              });
+          } else {
+            await axios
+              .post(`/api/users`, {
+                phone_number_or_email: searchParams.phone_number_or_email,
+                password: value.password,
+              })
+              .then((res) => {
+                console.log(res);
+                alert('شما با موفقیت ثبت نام شدید')
+                setIsSending(false);
+              })
+              .catch((err) => {
+                console.log(err);
+                setIsSending(false);
+              });
+          }
         }}>
         <Form className="sm:shadow-md p-5 rounded-md flex flex-col gap-2 max-w-xs w-full">
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-700 to-yellow-500 font-bold text-center text-3xl">
             Teftaco
           </span>
-          <label
-            htmlFor="password"
-            className="text-sm text-zinc-500"></label>
+          <p className="text-sm text-zinc-500"></p>
           <ErrorMessage id="password" name="password">
             {(err) => <span className="text-red-500">{err}</span>}
           </ErrorMessage>
           <Field
             id="password"
             name="password"
-            type='password'
+            type="password"
             placeholder="لطفا رمز عبور خود را وارد کنید ..."
             className="border p-2 rounded-md focus:border-sky-500 focus:caret-sky-500 focus:outline-none"
           />
-          <a href="#ورود با زمر یکبار مصرف" className="text-sm text-sky-500">ورود با زمر یکبار مصرف ←</a>
-          <a href="#تغییر رمز عبور" className="text-sm text-sky-500">تغییر رمز عبور ←</a>
+          <button onClick={goToOTP} className="text-sm text-sky-500 text-right">
+            ورود با رمز یکبار مصرف ←
+          </button>
+          <a href="#تغییر رمز عبور" className="text-sm text-sky-500">
+            تغییر رمز عبور ←
+          </a>
           <button
             type="submit"
-            className="py-2 text-white rounded-md bg-purple-700 hover:bg-purple-600 transition-colors mt-3">
-            ورود
+            disabled={isSending}
+            className="py-2 text-white rounded-md bg-purple-700 hover:bg-purple-600 transition-colors flex gap-3 justify-center items-center disabled:opacity-50">
+            {searchParams.is_exists == "true" ? "ورود" : "ثبت نام"}
+            <LuLoader2 className="text-xl animate-spin" hidden={!isSending} />
           </button>
         </Form>
       </Formik>

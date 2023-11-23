@@ -8,9 +8,10 @@ export async function GET(request : NextRequest) {
     const res = await axios.get(`${process.env.API_URL}/api/users/is-exists?phone_number_or_email=${phone_number_or_email}`,{
       headers:{
         'Content-Type': 'application/json',
-        'X-CSRFToken':process.env.X_CSRFToken
       }
     });
+    console.log(res);
+    
     return new NextResponse(JSON.stringify({
       ...res.data
     }),{status:200})
