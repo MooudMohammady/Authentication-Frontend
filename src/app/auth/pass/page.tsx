@@ -15,28 +15,13 @@ export default function Login_Password({
   const [isSending, setIsSending] = useState(false);
   const router = useRouter();
 
-  const goToOTP = useCallback(async () => {
+  const goToOTP = useCallback(async (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
     setIsSending(true);
     if (searchParams.is_exists == "true") {
       await axios
         .get(
           `/api/users/send-login-otp?phone_number_or_email=${searchParams.phone_number_or_email}`
-        )
-        .then((res) => {
-          alert(res.data.message);
-          router.push(
-            `/auth/otp?is_exists=${searchParams.is_exists}&phone_number_or_email=${searchParams.phone_number_or_email}`
-          );
-          setIsSending(false);
-        })
-        .catch((err) => {
-          console.log(err);
-          setIsSending(false);
-        });
-    } else {
-      await axios
-        .get(
-          `/api/users/send-sign-up-otp?phone_number_or_email=${searchParams.phone_number_or_email}`
         )
         .then((res) => {
           alert(res.data.message);
@@ -67,7 +52,7 @@ export default function Login_Password({
               })
               .then((res) => {
                 console.log(res);
-                alert('شما با موفقیت وارد شدید')
+                alert("شما با موفقیت وارد شدید");
                 setIsSending(false);
               })
               .catch((err) => {
@@ -82,8 +67,10 @@ export default function Login_Password({
               })
               .then((res) => {
                 console.log(res);
-                alert('شما با موفقیت ثبت نام شدید . حالا با ایمیل یا شماره تون وارد بشید')
-                router.push('/auth')
+                alert(
+                  "شما با موفقیت ثبت نام شدید . حالا با ایمیل یا شماره تون وارد بشید"
+                );
+                router.push("/auth");
                 setIsSending(false);
               })
               .catch((err) => {
@@ -107,12 +94,17 @@ export default function Login_Password({
             placeholder="لطفا رمز عبور خود را وارد کنید ..."
             className="border p-2 rounded-md focus:border-sky-500 focus:caret-sky-500 focus:outline-none"
           />
-          <button onClick={goToOTP} className="text-sm text-sky-500 text-right">
-            ورود با رمز یکبار مصرف ←
-          </button>
           <a href="#تغییر رمز عبور" className="text-sm text-sky-500">
             تغییر رمز عبور ←
           </a>
+          {searchParams.is_exists == "true" ? (
+            <a
+              href="/auth/otp"
+              onClick={goToOTP}
+              className="text-sm text-sky-500 text-right">
+              ورود با رمز یکبار مصرف ←
+            </a>
+          ) : null}
           <button
             type="submit"
             disabled={isSending}
