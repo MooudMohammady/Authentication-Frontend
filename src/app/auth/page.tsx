@@ -52,7 +52,7 @@ export default function Login() {
               setIsSending(false);
             });
         }}>
-        <Form className="sm:shadow-md p-5 rounded-md flex flex-col gap-2 max-w-xs w-full">
+        <Form className="sm:shadow-md p-5 rounded-md flex flex-col gap-2 max-w-xs w-full bg-white/50 backdrop-blur-sm">
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-700 to-yellow-500 font-bold text-center text-3xl">
             Teftaco
           </span>
@@ -67,7 +67,7 @@ export default function Login() {
             id="phone_number_or_email"
             name="phone_number_or_email"
             placeholder="لطفا شماره موبایل یا ایمیل خود را وارد کنید"
-            className="border p-2 rounded-md focus:border-sky-500 focus:caret-sky-500 focus:outline-none"
+            className="border p-2 rounded-md ring-0 ring-sky-500/50 transition focus:ring-2 focus:border-sky-500 focus:caret-sky-500 focus:outline-none"
           />
           <p className="text-[12px] text-zinc-400">
             ورود شما به معنی قبول{" "}
@@ -79,7 +79,7 @@ export default function Login() {
           <button
             type="submit"
             disabled={isSending}
-            className="py-2 text-white rounded-md bg-purple-700 hover:bg-purple-600 transition-colors flex gap-3 justify-center items-center disabled:opacity-50">
+            className="py-2 text-white rounded-md ring-0 ring-purple-500/50 focus:ring-4 bg-purple-700 hover:bg-purple-600 transition flex gap-3 justify-center items-center disabled:opacity-50">
             ارسال کد تایید{" "}
             <LuLoader2 className="text-xl animate-spin" hidden={!isSending} />
           </button>

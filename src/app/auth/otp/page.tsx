@@ -87,7 +87,7 @@ export default function Login_OTP({
               });
           }
         }}>
-        <Form className="sm:shadow-md p-5 rounded-md flex flex-col gap-2 max-w-xs w-full">
+        <Form className="sm:shadow-md p-5 rounded-md flex flex-col gap-2 max-w-xs w-full bg-white/50 backdrop-blur-sm">
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-700 to-yellow-500 font-bold text-center text-3xl">
             Teftaco
           </span>
@@ -116,7 +116,7 @@ export default function Login_OTP({
                 }
                 maxLength={1}
                 max={1}
-                className="no-spinner p-2 rounded-md border border-gray-300 focus:outline-none focus:border-sky-500 text-center w-full caret-sky-500"
+                className="no-spinner p-2 rounded-md ring-0 ring-sky-500/50 transition focus:ring-2 border border-gray-300 focus:outline-none focus:border-sky-500 text-center w-full caret-sky-500"
               />
             ))}
           </div>
@@ -129,7 +129,7 @@ export default function Login_OTP({
           <button
             type="submit"
             disabled={isSending}
-            className="py-2 text-white rounded-md bg-purple-700 hover:bg-purple-600 transition-colors flex gap-3 justify-center items-center disabled:opacity-50">
+            className="py-2 text-white rounded-md ring-0 ring-purple-500/50 focus:ring-4 bg-purple-700 hover:bg-purple-600 transition flex gap-3 justify-center items-center disabled:opacity-50">
             ارسال کد تایید{" "}
             <LuLoader2 className="text-xl animate-spin" hidden={!isSending} />
           </button>

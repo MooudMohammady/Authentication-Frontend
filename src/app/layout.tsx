@@ -13,7 +13,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fa-IR" dir='rtl'>
-      <body className='font-yekan'>{children}</body>
+      <body className='font-yekan'>
+        <img src="/bg.svg" alt="bg" className='absolute -z-10 h-full w-full inset-0 object-cover max-sm:hidden'/>
+        {children}
+        </body>
     </html>
   )
 }
