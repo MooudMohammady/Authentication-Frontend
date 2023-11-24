@@ -5,6 +5,7 @@ import { LoginSchema } from "@/validations";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { LuLoader2 } from "react-icons/lu";
+import Link from "next/link";
 
 export default function Login() {
   const [isSending, setIsSending] = useState(false);
@@ -83,6 +84,7 @@ export default function Login() {
             ارسال کد تایید{" "}
             <LuLoader2 className="text-xl animate-spin" hidden={!isSending} />
           </button>
+          <Link href='/admin'>admin</Link>
         </Form>
       </Formik>
     </main>

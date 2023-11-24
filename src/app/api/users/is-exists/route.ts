@@ -9,9 +9,7 @@ export async function GET(request : NextRequest) {
       headers:{
         'Content-Type': 'application/json',
       }
-    });
-    console.log(res);
-    
+    });    
     return new NextResponse(JSON.stringify({
       ...res.data
     }),{status:200})

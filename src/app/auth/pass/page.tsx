@@ -53,6 +53,7 @@ export default function Login_Password({
               .then((res) => {
                 console.log(res);
                 alert("شما با موفقیت وارد شدید");
+                router.push('/admin')
                 setIsSending(false);
               })
               .catch((err) => {

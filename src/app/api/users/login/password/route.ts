@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
       {
         status: 200,
         headers: {
-          "Set-Cookie": `token=${res.data.refresh}; httpOnly=true`,
+          "Set-Cookie": `token=${res.data.refresh}; httpOnly=true; path=/`,
         },
       }
     );
