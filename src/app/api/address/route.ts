@@ -1,3 +1,4 @@
+import { IAddress } from "@/Types";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -30,30 +31,19 @@ export async function GET(request: NextRequest) {
         Authorization: `Bearer ${data.access}`,
       },
     });
-    return new NextResponse(
-      JSON.stringify({
-        ...res.data,
-      }),
-      {
-        status: 200,
-      }
-    );
+    return new NextResponse(JSON.stringify(res.data), {
+      status: 200,
+    });
   } catch (error) {
     console.log("get addresses error : ", error);
   }
 }
 
 export async function POST(request: NextRequest) {
-  const body: Promise<{
-    user: string;
-    city: string;
-    province: string;
-    plaque: string;
-    description: string;
-    postal_code: string;
-  }> = request.json();
+  const body: Promise<IAddress> = request.json();
 
-  const { user, city, province, plaque, description, postal_code } = await body;
+  const { user, city, province, plaque, description, postal_code, unit } =
+    await body;
   try {
     const refresh = request.cookies.get("token")?.value;
 
@@ -78,7 +68,15 @@ export async function POST(request: NextRequest) {
     );
     const res = await axios.post(
       `${process.env.API_URL}/api/address/`,
-      { user, city, province, plaque, description, postal_code },
+      {
+        user,
+        city,
+        province,
+        plaque,
+        description,
+        postal_code,
+        unit: unit ? unit : 1,
+      },
       {
         headers: {
           "Content-Type": "application/json",
@@ -86,15 +84,10 @@ export async function POST(request: NextRequest) {
         },
       }
     );
-    return new NextResponse(
-      JSON.stringify({
-        ...res.data,
-      }),
-      {
-        status: 200,
-      }
-    );
-  } catch (error) {
+    return new NextResponse(JSON.stringify(res.data), {
+      status: 200,
+    });
+  } catch (error: any) {
     console.log("post address error : ", error);
   }
 }

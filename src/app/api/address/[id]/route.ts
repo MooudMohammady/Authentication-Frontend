@@ -1,7 +1,10 @@
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request: NextRequest) {
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
     const refresh = request.cookies.get("token")?.value;
 
@@ -24,16 +27,19 @@ export async function GET(request: NextRequest) {
         },
       }
     );
-    const res = await axios.get(`${process.env.API_URL}/api/users/get-id`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${data.access}`,
-      },
-    });
+    const res = await axios.delete(
+      `${process.env.API_URL}/api/address/${params.id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${data.access}`,
+        },
+      }
+    );
     return new NextResponse(JSON.stringify(res.data), {
       status: 200,
     });
   } catch (error) {
-    console.log("users get-id error : ", error);
+    console.log("get addresses error : ", error);
   }
 }
