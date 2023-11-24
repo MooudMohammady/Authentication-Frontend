@@ -6,12 +6,12 @@ import { LuLoader2, LuTrash } from "react-icons/lu";
 
 export default function DeleteAddressButton({
   addressId,
-  reFetch,
   reFetchAddress,
+  setReFetchAddress,
 }: {
   addressId: string;
-  reFetch: boolean;
-  reFetchAddress: React.Dispatch<React.SetStateAction<boolean>>;
+  reFetchAddress: boolean;
+  setReFetchAddress: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -76,7 +76,7 @@ export default function DeleteAddressButton({
                         await axios
                           .delete(`/api/address/${addressId}`)
                           .then(() => {
-                            reFetchAddress(!reFetch);
+                            setReFetchAddress(!reFetchAddress);
                             setTimeout(() => {
                               closeModal();
                               setIsDeleting(false);

@@ -4,8 +4,9 @@ import DeleteAddressButton from "@/components/DeleteAddressButton";
 import axios from "axios";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useContext, useEffect, useState } from "react";
-import { LuLoader2, LuPenSquare } from "react-icons/lu";
-import AdminContext from "../contexts/AdminContext";
+import { LuLoader2 } from "react-icons/lu";
+import AdminContext from "@/contexts/AdminContext";
+import EditAddressButton from "@/components/EditAddressButton";
 //@ts-ignore
 const DescriptionInput = ({ field, form, ...props }) => {
   return <textarea {...field} {...props} />;
@@ -129,13 +130,15 @@ export default function AdminPage() {
                 {address.unit}, {address.description}, {address.postal_code}
               </div>
               <div className="flex gap-3 w-40 justify-end">
-                <button className="grid place-items-center text-white bg-blue-500 rounded p-2 hover:bg-blue-400 transition hover:shadow ring-0 ring-blue-500/50 active:bg-blue-600 focus:ring-2 h-9">
-                  <LuPenSquare />
-                </button>
+                <EditAddressButton
+                  address={address!}
+                  reFetchAddress={reFetchAddress}
+                  setReFetchAddress={setReFetchAddress}
+                />
                 <DeleteAddressButton
                   addressId={address.id!}
-                  reFetch={reFetchAddress}
-                  reFetchAddress={setReFetchAddress}
+                  reFetchAddress={reFetchAddress}
+                  setReFetchAddress={setReFetchAddress}
                 />
               </div>
             </div>

@@ -1,5 +1,5 @@
 "use client";
-import AdminContext from "@/app/contexts/AdminContext";
+import AdminContext from "@/contexts/AdminContext";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
