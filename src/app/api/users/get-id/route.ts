@@ -1,10 +1,11 @@
 import axios from "axios";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
-export async function GET(request: NextRequest) {
+export async function GET() {
+  const cookieStorage = cookies();
+  const refresh = cookieStorage.get("token")?.value;
   try {
-    const refresh = request.cookies.get("token")?.value;
-
     if (!refresh) {
       return new NextResponse(
         JSON.stringify({

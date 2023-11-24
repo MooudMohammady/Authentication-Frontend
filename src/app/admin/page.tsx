@@ -120,7 +120,7 @@ export default function AdminPage() {
       </Formik>
       <div className="shadow-inner border p-4 rounded-md flex flex-col gap-3 bg-zinc-100/50">
         <h2 className="text-center text-lg">ادرس ها</h2>
-        {addresses &&
+        {addresses ? (
           addresses?.map((address) => (
             <div
               key={address.id}
@@ -142,7 +142,10 @@ export default function AdminPage() {
                 />
               </div>
             </div>
-          ))}
+          ))
+        ) : (
+          <LuLoader2 className="text-2xl animate-spin text-purple-500 mx-auto" />
+        )}
       </div>
     </main>
   );

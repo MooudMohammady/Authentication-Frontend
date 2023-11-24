@@ -15,27 +15,30 @@ export default function Login_Password({
   const [isSending, setIsSending] = useState(false);
   const router = useRouter();
 
-  const goToOTP = useCallback(async (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    setIsSending(true);
-    if (searchParams.is_exists == "true") {
-      await axios
-        .get(
-          `/api/users/send-login-otp?phone_number_or_email=${searchParams.phone_number_or_email}`
-        )
-        .then((res) => {
-          alert(res.data.message);
-          router.push(
-            `/auth/otp?is_exists=${searchParams.is_exists}&phone_number_or_email=${searchParams.phone_number_or_email}`
-          );
-          setIsSending(false);
-        })
-        .catch((err) => {
-          console.log(err);
-          setIsSending(false);
-        });
-    }
-  }, []);
+  const goToOTP = useCallback(
+    async (e: React.MouseEvent<HTMLAnchorElement>) => {
+      e.preventDefault();
+      setIsSending(true);
+      if (searchParams.is_exists == "true") {
+        await axios
+          .get(
+            `/api/users/send-login-otp?phone_number_or_email=${searchParams.phone_number_or_email}`
+          )
+          .then((res) => {
+            alert(res.data.message);
+            router.push(
+              `/auth/otp?is_exists=${searchParams.is_exists}&phone_number_or_email=${searchParams.phone_number_or_email}`
+            );
+            setIsSending(false);
+          })
+          .catch((err) => {
+            console.log(err);
+            setIsSending(false);
+          });
+      }
+    },
+    []
+  );
 
   return (
     <main className="h-screen grid place-items-center">
@@ -51,9 +54,8 @@ export default function Login_Password({
                 password: value.password,
               })
               .then((res) => {
-                console.log(res);
                 alert("شما با موفقیت وارد شدید");
-                router.push('/admin')
+                router.push("/admin");
                 setIsSending(false);
               })
               .catch((err) => {
