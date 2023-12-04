@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import NextProgressBar from "nextjs-toploader";
+// import NextProgressBar from "nextjs-toploader";
 import { ToastContainer } from "react-toastify";
 
 export default function AppProvider({
@@ -10,7 +10,7 @@ export default function AppProvider({
 }) {
   return (
     <>
-      <NextProgressBar color="rgb(126 34 206)" />
+      {/* <NextProgressBar color="rgb(126 34 206)" /> */}
       <ToastContainer/>
       {children}
     </>
