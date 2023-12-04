@@ -6,6 +6,7 @@ import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { LuLoader2 } from "react-icons/lu";
+import { toast } from "react-toastify";
 
 export default function Login_Password({
   searchParams,
@@ -48,13 +49,19 @@ export default function Login_Password({
         onSubmit={async (value) => {
           setIsSending(true);
           if (searchParams.is_exists == "true") {
-            await axios
-              .post(`/api/users/login/password`, {
-                username: searchParams.phone_number_or_email,
-                password: value.password,
-              })
+            await toast
+              .promise(
+                axios.post(`/api/users/login/password`, {
+                  username: searchParams.phone_number_or_email,
+                  password: value.password,
+                }),
+                {
+                  pending: "درحال ورود",
+                  error: "شما وارد نشدید!",
+                  success: "شما با موفقیت وارد شدید !",
+                }
+              )
               .then((res) => {
-                alert("شما با موفقیت وارد شدید");
                 router.push("/admin");
                 setIsSending(false);
               })
