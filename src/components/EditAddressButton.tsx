@@ -6,6 +6,7 @@ import axios from "axios";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { Fragment, useContext, useState } from "react";
 import { LuLoader2, LuPenSquare } from "react-icons/lu";
+import { toast } from "react-toastify";
 
 //@ts-ignore
 const DescriptionInput = ({ field, form, ...props }) => {
@@ -84,11 +85,18 @@ export default function EditAddressButton({
                     }}
                     onSubmit={async (value) => {
                       setIsEditing(true);
-                      await axios
-                        .put(`/api/address/${address.id}`, {
-                          user: userId,
-                          ...value,
-                        })
+                      await toast
+                        .promise(
+                          axios.put(`/api/address/${address.id}`, {
+                            user: userId,
+                            ...value,
+                          }),
+                          {
+                            pending: "درحال ویرایش اطلاعات",
+                            error: "ویرایش نشد!",
+                            success: "ادرس با موفقیت ویرایش شد!",
+                          }
+                        )
                         .then(() => {
                           setReFetchAddress(!reFetchAddress);
                           setTimeout(() => {

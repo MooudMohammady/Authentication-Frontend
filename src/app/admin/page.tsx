@@ -7,6 +7,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { LuLoader2 } from "react-icons/lu";
 import AdminContext from "@/contexts/AdminContext";
 import EditAddressButton from "@/components/EditAddressButton";
+import { toast } from "react-toastify";
 //@ts-ignore
 const DescriptionInput = ({ field, form, ...props }) => {
   return <textarea {...field} {...props} />;
@@ -45,11 +46,18 @@ export default function AdminPage() {
         }}
         onSubmit={async (value) => {
           setIsSending(true);
-          await axios
-            .post("/api/address/", {
-              user: userId,
-              ...value,
-            })
+          await toast
+            .promise(
+              axios.post("/api/address/", {
+                user: userId,
+                ...value,
+              }),
+              {
+                pending: "درحال ارسال اطلاعات",
+                error: "ارسال نشد!",
+                success: "ادرس با موفقیت اضافه شد!",
+              }
+            )
             .then(() => {
               setReFetchAddress(!reFetchAddress);
               setIsSending(false);

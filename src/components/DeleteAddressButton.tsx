@@ -3,6 +3,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import axios from "axios";
 import { Fragment, useState } from "react";
 import { LuLoader2, LuTrash } from "react-icons/lu";
+import { toast } from "react-toastify";
 
 export default function DeleteAddressButton({
   addressId,
@@ -73,8 +74,12 @@ export default function DeleteAddressButton({
                       disabled={isDeleting}
                       onClick={async () => {
                         setIsDeleting(true);
-                        await axios
-                          .delete(`/api/address/${addressId}`)
+                        await toast
+                          .promise(axios.delete(`/api/address/${addressId}`), {
+                            pending: "درحال حذف ادرس مورد نظر",
+                            error: "حذف نشد!",
+                            success: "ادرس با موفقیت حذف شد!",
+                          })
                           .then(() => {
                             setReFetchAddress(!reFetchAddress);
                             setTimeout(() => {
